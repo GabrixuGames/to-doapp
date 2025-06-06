@@ -67,20 +67,42 @@ def update_task(task_id):
     description = data.get('description')
     completed = data.get('completed')
 
+    # Construir la query dinámicamente según los campos recibidos
+    fields = []
+    values = []
+
+    if title is not None:
+        fields.append("title = %s")
+        values.append(title)
+
+    if description is not None:
+        fields.append("description = %s")
+        values.append(description)
+
+    if completed is not None:
+        fields.append("completed = %s")
+        values.append(completed)
+
+    if not fields:
+        return jsonify({"error": "No hay datos para actualizar"}), 400
+
+    values.append(task_id)
+
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute("""
+        cur.execute(f"""
             UPDATE tasks
-            SET title = %s, description = %s, completed = %s
+            SET {', '.join(fields)}
             WHERE id = %s
-        """, (title, description, completed, task_id))
+        """, values)
         conn.commit()
         cur.close()
         conn.close()
         return jsonify({"message": "Tarea actualizada"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @bp.route("/<int:task_id>", methods=["DELETE"])
