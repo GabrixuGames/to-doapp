@@ -24,26 +24,31 @@ Aplicación web de gestión de tareas construida con **React** (frontend) y **Fl
   
 2. Instalar dependencias:
 
-    ```pip install -r requirements.txt```
+   ```bash
+    pip install -r requirements.txt
 
 3. Ejecutar la app:
 
-    ```flask run```
+   ```bash
+    flask run
 
 ### 💻 Frontend (React)
 
 1. Acceder a la carpeta del forntend
 
-   ```cd frontend```
+   ```bash
+    cd frontend
 
 2. Instalar las dependencias:
 
- ```npm install```
+   ```bash
+     npm install```
 
 
 3. Iniciar el servidor de desarrollo:
 
- ```npm run dev```
+   ```bash
+    npm run dev
 
  ### 📋 Estructura del proyecto
 ```
