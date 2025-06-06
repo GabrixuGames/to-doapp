@@ -22,7 +22,7 @@ const TaskDashboard = ({ user, onLogout }: TaskDashboardProps) => {
     deleteTask,
     toggleTaskComplete,
     tasksCount
-  } = useTasks();
+  } = useTasks(user.id);
 
   const filterButtons: { key: TaskFilter; label: string; color: string }[] = [
     { key: 'all', label: 'Todas', color: 'bg-gray-100 text-gray-800' },
