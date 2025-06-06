@@ -1,4 +1,4 @@
-# 📝 TaskApp
+# 📝 To-Do App
 
 Aplicación web de gestión de tareas construida con **React** (frontend) y **Flask** (backend). Permite crear, listar, editar, completar y eliminar tareas de forma intuitiva y eficiente.
 
