@@ -34,8 +34,11 @@ def register():
 
 
 
-@bp_auth.route("/login", methods=["POST"])
+@bp_auth.route("/login", methods=["POST", "OPTIONS"])
 def login():
+    if request.method == "OPTIONS":
+        return '', 200  # Respuesta vacía para que el navegador continúe con el POST
+
     data = request.json
     email = data.get("email")
     password = data.get("password")
@@ -61,3 +64,4 @@ def login():
             return jsonify({"error": "Contraseña incorrecta"}), 401
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+

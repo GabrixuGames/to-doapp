@@ -9,39 +9,58 @@ const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const { toast } = useToast();
 
-  const handleLogin = (email: string, password: string) => {
-    // Simulación de login - en producción usarías autenticación real con Supabase
-    console.log('Login attempt:', { email, password });
-    
-    const mockUser: User = {
-      id: '1',
-      email,
-      name: email.split('@')[0],
-    };
-    
-    setUser(mockUser);
-    toast({
-      title: "¡Bienvenido!",
-      description: `Has iniciado sesión correctamente, ${mockUser.name}.`,
+const handleLogin = async (email: string, password: string) => {
+  try {
+    const res = await fetch('http://localhost:5000/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     });
-  };
 
-  const handleRegister = (name: string, email: string, password: string) => {
-    // Simulación de registro - en producción usarías autenticación real con Supabase
-    console.log('Register attempt:', { name, email, password });
-    
-    const mockUser: User = {
-      id: '1',
-      email,
-      name,
-    };
-    
-    setUser(mockUser);
-    toast({
-      title: "¡Cuenta creada!",
-      description: `Bienvenido a TaskFlow, ${name}.`,
+    const data = await res.json();
+
+    if (res.ok) {
+      const mockUser: User = {
+        id: String(data.user_id),
+        email,
+        name: email.split('@')[0],
+      };
+      setUser(mockUser);
+      toast({ title: '¡Bienvenido!', description: `Has iniciado sesión, ${mockUser.name}.` });
+    } else {
+      toast({ title: 'Error al iniciar sesión', description: data.message || 'Credenciales inválidas' });
+    }
+  } catch (error) {
+    toast({ title: 'Error de red', description: 'No se pudo conectar con el servidor.' });
+  }
+};
+
+const handleRegister = async (name: string, email: string, password: string) => {
+  try {
+    const res = await fetch('http://localhost:5000/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: name,  email, password }),
     });
-  };
+
+    const data = await res.json();
+
+    if (res.ok) {
+      const mockUser: User = {
+        id: String(data.user_id),
+        email,
+        name,
+      };
+      setUser(mockUser);
+      toast({ title: '¡Cuenta creada!', description: `Bienvenido a TaskFlow, ${name}.` });
+    } else {
+      toast({ title: 'Error al registrarse', description: data.message || 'Error desconocido.' });
+    }
+  } catch (error) {
+    toast({ title: 'Error de red', description: 'No se pudo conectar con el servidor.' });
+  }
+};
+
 
   const handleLogout = () => {
     setUser(null);

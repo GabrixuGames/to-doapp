@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/auth/*": {"origins": "*"}}, supports_credentials=True)
+
 
 # Registrar rutas
 app.register_blueprint(auth.bp_auth)
